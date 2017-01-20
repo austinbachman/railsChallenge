@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Hospital Analytes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Hospital</th>
+      <th>Analyte</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @hospital_analytes.each do |hospital_analyte| %>
+      <tr>
+        <td><%= hospital_analyte.hospital %></td>
+        <td><%= hospital_analyte.analyte %></td>
+        <td><%= link_to 'Show', hospital_analyte %></td>
+        <td><%= link_to 'Edit', edit_hospital_analyte_path(hospital_analyte) %></td>
+        <td><%= link_to 'Destroy', hospital_analyte, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Hospital analyte', new_hospital_analyte_path %>

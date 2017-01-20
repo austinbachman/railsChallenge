@@ -3,10 +3,9 @@ class Result < ActiveRecord::Base
   belongs_to :analyte
 
   def self.reno_results_helper
-    self.includes(speciman: :physician)
-    .where("physician.phone_number LIKE 775%")
+    self.joins(speciman: :physician)
+    .where("physicians.physician_phone_number LIKE '775%'")
     .select("results.*")
-
   end
 
   def reno_results

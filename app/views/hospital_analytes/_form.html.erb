@@ -1,0 +1,25 @@
+<%= form_for(@hospital_analyte) do |f| %>
+  <% if @hospital_analyte.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@hospital_analyte.errors.count, "error") %> prohibited this hospital_analyte from being saved:</h2>
+
+      <ul>
+      <% @hospital_analyte.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :hospital %><br>
+    <%= f.text_field :hospital %>
+  </div>
+  <div class="field">
+    <%= f.label :analyte %><br>
+    <%= f.text_field :analyte %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,1 @@
+json.array! @hospital_analytes, partial: 'hospital_analytes/hospital_analyte', as: :hospital_analyte
