@@ -1,0 +1,1 @@
+json.partial! "specimen/speciman", speciman: @speciman

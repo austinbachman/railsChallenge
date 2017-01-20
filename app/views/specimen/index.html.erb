@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Specimen</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sample name</th>
+      <th>Date received</th>
+      <th>Sample type</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @specimen.each do |speciman| %>
+      <tr>
+        <td><%= speciman.sample_name %></td>
+        <td><%= speciman.date_received %></td>
+        <td><%= speciman.sample_type %></td>
+        <td><%= link_to 'Show', speciman %></td>
+        <td><%= link_to 'Edit', edit_speciman_path(speciman) %></td>
+        <td><%= link_to 'Destroy', speciman, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Speciman', new_speciman_path %>

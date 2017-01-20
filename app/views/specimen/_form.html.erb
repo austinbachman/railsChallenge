@@ -1,0 +1,29 @@
+<%= form_for(@speciman) do |f| %>
+  <% if @speciman.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@speciman.errors.count, "error") %> prohibited this speciman from being saved:</h2>
+
+      <ul>
+      <% @speciman.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :sample_name %><br>
+    <%= f.text_field :sample_name %>
+  </div>
+  <div class="field">
+    <%= f.label :date_received %><br>
+    <%= f.date_select :date_received %>
+  </div>
+  <div class="field">
+    <%= f.label :sample_type %><br>
+    <%= f.text_field :sample_type %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

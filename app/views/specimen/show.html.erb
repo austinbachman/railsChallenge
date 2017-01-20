@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Sample name:</strong>
+  <%= @speciman.sample_name %>
+</p>
+
+<p>
+  <strong>Date received:</strong>
+  <%= @speciman.date_received %>
+</p>
+
+<p>
+  <strong>Sample type:</strong>
+  <%= @speciman.sample_type %>
+</p>
+
+<%= link_to 'Edit', edit_speciman_path(@speciman) %> |
+<%= link_to 'Back', specimen_path %>

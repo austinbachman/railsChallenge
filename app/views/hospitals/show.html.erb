@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Hospital name:</strong>
+  <%= @hospital.hospital_name %>
+</p>
+
+<p>
+  <strong>Hospital address:</strong>
+  <%= @hospital.hospital_address %>
+</p>
+
+<%= link_to 'Edit', edit_hospital_path(@hospital) %> |
+<%= link_to 'Back', hospitals_path %>

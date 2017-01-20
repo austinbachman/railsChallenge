@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Analyte name:</strong>
+  <%= @analyte.analyte_name %>
+</p>
+
+<p>
+  <strong>Result range:</strong>
+  <%= @analyte.result_range %>
+</p>
+
+<%= link_to 'Edit', edit_analyte_path(@analyte) %> |
+<%= link_to 'Back', analytes_path %>

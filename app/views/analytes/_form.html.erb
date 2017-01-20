@@ -1,0 +1,25 @@
+<%= form_for(@analyte) do |f| %>
+  <% if @analyte.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@analyte.errors.count, "error") %> prohibited this analyte from being saved:</h2>
+
+      <ul>
+      <% @analyte.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :analyte_name %><br>
+    <%= f.text_field :analyte_name %>
+  </div>
+  <div class="field">
+    <%= f.label :result_range %><br>
+    <%= f.text_field :result_range %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

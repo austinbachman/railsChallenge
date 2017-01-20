@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Analytes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Analyte name</th>
+      <th>Result range</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @analytes.each do |analyte| %>
+      <tr>
+        <td><%= analyte.analyte_name %></td>
+        <td><%= analyte.result_range %></td>
+        <td><%= link_to 'Show', analyte %></td>
+        <td><%= link_to 'Edit', edit_analyte_path(analyte) %></td>
+        <td><%= link_to 'Destroy', analyte, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Analyte', new_analyte_path %>
