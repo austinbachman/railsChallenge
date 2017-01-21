@@ -11,5 +11,4 @@ class Result < ActiveRecord::Base
   def reno_results
     self.class.reno_results_helper
   end
-
 end

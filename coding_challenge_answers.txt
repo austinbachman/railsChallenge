@@ -1,0 +1,153 @@
+##############################################################################
+# The models below represent a basic patient specimen tracking system for a 
+# hospital. A Patient submits a Specimen to a Physician who works at a 
+# Hospital, and the Specimen's Results are reported for different Analytes and 
+# their values. 
+#
+# All models have id and timestamp fields, as well as any fields needed to
+# satisfy the relationships outlined for each model.
+#
+# Please answer the questions below. For the code-related questions, you can
+# combine them in the code provided to you below, you don't need to 
+# seperate them into different copies of the original codebase. 
+#
+#
+# - Draw an ERD for the models below.
+# *See Challenge ERD.jpg, based on original models, not my
+# updated versions***
+# 
+# - Write an ActiveRecord query to grab all analyte names for a physician from 
+# results reported in the first quarter of 2014. You can add code to models 
+# (no adding/removing DB attributes) as you see fit. Place the code in a method
+# titled 'result_analytes' in the Physician class.
+# 
+# - Write an ActiveRecord query to get all results reported by physicians 
+# in the 775 area code. Place the code in a method titled 'reno_results' in the 
+# Result class.
+# 
+# - Hospitals want to limit the type of Analytes tested by their Physicians, so 
+# that physicians at that hospital can only order from a designated list of 
+# Analytes. Modify the schema to accomodate this. You can add/remove/modify 
+# models as you see fit.
+# 
+# - Physicians are now allowed to work at multiple hospitals, and can designate 
+# a single hospital as their primary hospital. Write an ActiveRecord migration 
+# that would add this functionality without losing any current data. If a 
+# physician belongs to a hospital before the migration, make that hospital 
+# their primary hospital.
+# 
+# 
+# 
+# - What do you dislike the most about Ruby/RoR?
+#
+# It's almost too intelligent in the way it understands English plurality and
+# other naming conventions. For example, if I want to call something 'specimen,'
+# it automatically changes it to 'speciman,' instead of just calling the plural 
+# version 'specimens.' Also, when using rails generate, the convention is very
+# specific and verbose. Kind of difficult to get a handle on at first.
+#
+##############################################################################
+
+
+
+
+# other attributes: result_value:integer, reported_at:datetime
+class Result < ActiveRecord::Base
+  belongs_to :speciman
+  belongs_to :analyte
+
+  def self.reno_results_helper
+    self.joins(speciman: :physician)
+    .where("physicians.physician_phone_number LIKE '775%'")
+    .select("results.*")
+  end
+
+  def reno_results
+    self.class.reno_results_helper
+  end
+end
+
+# other attributes: analyte_name:string, result_range:string
+class Analyte < ActiveRecord::Base
+  has_many :results
+  has_many :hospital_analytes
+  has_many :hospitals, through: :hospital_analytes
+end
+
+# other attributes: sample_name:string, date_received:date, sample_type:string 
+class Speciman < ActiveRecord::Base
+  belongs_to :physician
+  has_many :results
+end
+
+# other attributes: patient_name:string, patient_address:string, 
+# patient_phone_number:string
+class Patient < ActiveRecord::Base
+  belongs_to :physician
+  has_many :specimen
+end
+
+# other attributes: physician_name:string, physician_phone_number:string, 
+# physician_type:string
+class Physician < ActiveRecord::Base
+  has_many :specimen
+  #belongs_to :hospital
+  has_many :hospital_physicians
+  has_many :hospitals, through: :hospital_physicians
+  has_many :patients
+
+  validates :physician_phone_number, format: { with: /\d{3}-\d{3}-\d{4}/, 
+    message: "bad format" }
+
+  def result_analytes
+    self.specimen.includes(results: :analyte)
+                 .where(results: {reported_at: DateTime.new(2014,1,1)..DateTime.new(2014,4,1)})
+                 .pluck('distinct analytes.analyte_name')
+  end
+end
+
+# other attributes: hospital_name:string, hospital_address:string, 
+class Hospital < ActiveRecord::Base
+  has_many :hospital_physicians
+  has_many :physicians, through: :hospital_physicians
+  has_many :hospital_analytes
+  has_many :analytes, through: :hospital_analytes
+end
+
+#association table between hospitals and analytes
+class HospitalAnalyte < ActiveRecord::Base
+	belongs_to :hospital
+	belongs_to :analyte
+end
+
+#first migration for multiple hospitals, create relationship table
+class CreateHospitalPhysician < ActiveRecord::Migration
+  def change
+    create_table :hospital_physicians do |t|
+      t.references :hospital, index: true, foreign_key: true
+      t.references :physician, index: true, foreign_key: true
+      t.boolean :primary
+    end
+  end
+end
+
+#second migration, populate relationship table
+class PopulateRelationForPhysicians < ActiveRecord::Migration
+  def change
+    Physician.all.each do |p| 
+      next if p.hospital_id.nil?
+      HospitalPhysician.create!(physician_id: p.id,
+                                hospital_id: p.hospital_id,
+                                primary: true)
+    end 
+  end
+end
+
+#third migration, remove hospital_id from physician
+class RemoveHospitalIdFromPhysician < ActiveRecord::Migration
+  def change
+    remove_column :physicians, :hospital_id, :integer
+  end
+end
+
+
