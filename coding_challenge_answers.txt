@@ -13,8 +13,8 @@
 #
 #
 # - Draw an ERD for the models below.
-# *See Challenge ERD.jpg, based on original models, not my
-# updated versions***
+# *See Challenge_ERD_Before.jpg for original models
+# and Challenge_ERD_After.jpg for final models
 # 
 # - Write an ActiveRecord query to grab all analyte names for a physician from 
 # results reported in the first quarter of 2014. You can add code to models 
